@@ -28,7 +28,6 @@ type Category struct {
 	Currency  Currency
 	CreatedAt time.Time
 	ParentId  *uuid.UUID
-	Children  []*Category
 }
 
 type Transaction struct {
@@ -89,7 +88,6 @@ func NewCategory(name string, currency Currency, userId uuid.UUID) *Category {
 		UserId:    userId,
 		CreatedAt: time.Now(),
 		ParentId:  nil,
-		Children:  []*Category{},
 	}
 }
 

@@ -37,7 +37,7 @@ type UserService interface {
 
 type TokenService interface {
 	CreateForUser(u *domain.User) *UserToken
-	GetByValue(ctx context.Context, v string) (*UserToken, error)
+	GetValidByValue(ctx context.Context, v string) (*UserToken, error)
 }
 
 type WalletService interface {
@@ -48,11 +48,16 @@ type WalletService interface {
 }
 
 type CategoryService interface {
-	Create(ctx context.Context, request *CategoryCreateRequest) (category *domain.Category, parent *domain.Category, err error)
+	Create(ctx context.Context, request *CategoryCreateRequest) (category *domain.Category, err error)
+	GetList(ctx context.Context, request *CategoryGetListRequest) (categoryList []*domain.Category, err error)
+	Delete(ctx context.Context, request *CategoryDeleteRequest) (err error)
+	Update(ctx context.Context, request *CategoryUpdateRequest) (node *CategoryTreeNode, err error)
+	GetOne(ctx context.Context, request *CategoryGetOneRequest) (node *CategoryTreeNode, err error)
 }
 
 type TransactionService interface {
 	Create(ctx context.Context, request *TransactionCreateRequest) (*domain.Transaction, error)
+	GetAmount(transactionList []*domain.Transaction) float32
 }
 
 func (s *service) User() UserService {

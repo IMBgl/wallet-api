@@ -27,7 +27,7 @@ func (m *apiMiddleware) Auth(next http.Handler) http.Handler {
 			return
 		}
 
-		token, err := m.service.Token().GetByValue(context.Background(), tokenHeader)
+		token, err := m.service.Token().GetValidByValue(context.Background(), tokenHeader)
 		if err != nil || token == nil {
 			log.Printf("GetToken by value err %v", err)
 			render.Render(w, r, ErrNotFound)

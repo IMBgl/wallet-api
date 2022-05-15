@@ -61,6 +61,19 @@ func GenerateTokenValue() string {
 	return hash
 }
 
-func (s *tokenServiсe) GetByValue(ctx context.Context, v string) (*UserToken, error) {
-	return s.repo.Token().GetByValue(ctx, v)
+func (s *tokenServiсe) GetValidByValue(ctx context.Context, v string) (*UserToken, error) {
+	token, err := s.repo.Token().GetByValue(ctx, v)
+	if err != nil {
+		return nil, err
+	}
+
+	if token == nil || !token.IsValid() {
+		return nil, ErrNotFound
+	}
+
+	return token, nil
+}
+
+func (t *UserToken) IsValid() bool {
+	return t.Exp.After(time.Now())
 }
